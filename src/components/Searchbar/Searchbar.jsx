@@ -12,10 +12,11 @@ import axios from 'axios';
 
 // const BASE_URL = 'https://pixabay.com/api';
 
-
-
 class Searchbar extends Component
 {
+    state ={
+        findImage: null,
+    }
 
 
 // функція запиту
@@ -34,6 +35,12 @@ async  componentDidMount() {
       },
     }
   );
+//   для вантажника
+ 
+
+
+
+
 //   console.log(inputValue, currentPage)
   console.log(Searchbar, responseImg, '*****resp*****');
 //   loaderVar.setAttribute('hidden', 'hidden');
@@ -60,8 +67,29 @@ async  componentDidMount() {
     render()
     {
 
-     return 
+     return (
+        <> 
+        {this.state.findImage && (<div> почекай</div>)}
    
+
+       <header className="searchbar">
+        <form className="form">
+          <button type="submit" className="button">
+            <span className="button-label">Search</span>
+          </button>
+      
+          <input
+            className="input"
+            type="text"
+            // autocomplete="off"
+            // autofocus
+            placeholder="Search images and photos"
+          />
+        </form>
+      </header> 
+      </>
+     )
+
     }
 }
 
