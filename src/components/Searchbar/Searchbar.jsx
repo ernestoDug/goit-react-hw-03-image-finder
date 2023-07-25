@@ -1,96 +1,88 @@
 // import index from "./Searchbar/Searchbar";
 
 import { Component } from 'react';
+// import fetchIMG from 'components/helpers/fenchIMG';
 
 // import PropTypes from 'prop-types';
 
 // import css from './Filter.module.css';
 
-import axios from 'axios';
-
-// const MY_KEY = '28539247-0afb9c376c93f2bc11eaacc3c';
-
-// const BASE_URL = 'https://pixabay.com/api';
-
-class Searchbar extends Component
-{
-    state ={
-        findImage: null,
-    }
-
-
-// функція запиту
-async  componentDidMount() {
-//   loaderVar.removeAttribute('hidden');
-  const responseImg = await axios.get(
-"https://pixabay.com/api/?q=cat&page=1&key=28539247-0afb9c376c93f2bc11eaacc3c&image_type=photo&orientation=horizontal&per_page=12",
-    {
-
-        // ${currentPage}
-      params: {
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: 'true',
-        per_page: 12,
-      },
-    }
-  );
-//   для вантажника
- 
+// let inputValue = "dog";
 
 
 
+class Searchbar extends Component {
+  state = {
+    findImages: null,
+  };
 
-//   console.log(inputValue, currentPage)
-  console.log(Searchbar, responseImg, '*****resp*****');
-//   loaderVar.setAttribute('hidden', 'hidden');
+  // шукач
+  changer = event => {
+    this.setState({findImages: event.currentTarget.value.toLowerCase()});
+  }
 
-  // сповіщення про кількість сторінок
-//   if (page === 1 && responseImg.data.hits.length !== 0) {
-//     // Notify.info(`🕵️‍♀️ УРА, Ви знайшли ${responseImg.data.totalHits} світлин`);
-//   }
-//   // сповіщення відсутність
-//   if (responseImg.data.hits.length === 0 && page === 1) {
-//     Notify.warning(`🥺 Шкода, світлин не знайдено...`);
-//   }
+  // відпрвник
+submiter = event => {
 
-  // console.log("page", responseImg.data.total, "88888888", responseImg.data.hits);
+  event.preventDefault();
 
-//   return [responseImg.data.hits, responseImg.data.totalHits];
+  // пропсик від апп
+this.props.propsFromApp(this.setState.findImages)
+// *********************************************************зупинився на 2018
+  this.setState({findImages: ''})
 }
 
 
+  render() {
+    return (
+      <>
+        {this.state.findImages && <div> {this.state.findImages}</div>}
 
+        <header className="searchbar">
+          <form className="form">
+            <button type="submit" className="button">
+              <span className="button-label">Search</span>
+            </button>
 
-
-
-    render()
-    {
-
-     return (
-        <> 
-        {this.state.findImage && (<div> почекай</div>)}
-   
-
-       <header className="searchbar">
-        <form className="form">
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
-          </button>
-      
-          <input
-            className="input"
-            type="text"
-            // autocomplete="off"
-            // autofocus
-            placeholder="Search images and photos"
-          />
-        </form>
-      </header> 
+            <input
+              className="input"
+              type="text"
+              // autocomplete="off"
+              // autofocus
+              placeholder="Почніть пошук..."
+              value={this.state.findImages}
+              onChange={this.changer}
+            />
+          </form>
+        </header>
       </>
-     )
-
-    }
+    );
+  }
 }
+export  default Searchbar
 
-export default Searchbar
+
+
+
+
+  // запит          
+  // componentDidMount() {
+  //   //   loaderVar.removeAttribute('hidden');
+  //   const responseImg = axios.get(
+  //     'https://pixabay.com/api/?q=cat&page=1&key=28539247-0afb9c376c93f2bc11eaacc3c&image_type=photo&orientation=horizontal&per_page=12',
+  //     {
+  //       // ${currentPage}
+  //       params: {
+  //         image_type: 'photo',
+  //         orientation: 'horizontal',
+  //         safesearch: 'true',
+  //         per_page: 12,
+  //       },
+  //     }
+  //     // запис у стан
+  //     )
+  // componentDidMount() {
+  //   fetchIMG(inputValue).then( findImage => this.setState({findImage}))
+  // }
+
+  

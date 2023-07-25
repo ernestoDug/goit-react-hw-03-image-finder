@@ -1,7 +1,19 @@
 import Searchbar from 'components/Searchbar/Searchbar';
+import ImageGallery from './ImageGallery/ImageGallery';
+import { Component } from 'react';
 
 
-export const App = () => {
+class App extends Component {
+
+  // отримувач з форми
+  sumiterFromForm = findImages => {
+
+  }
+
+
+  render (){
+
+ 
   return (
     <div
       style={{
@@ -13,6 +25,15 @@ export const App = () => {
         color: '#010101'
       }}
     >
-    <Searchbar/>    </div>
+    <Searchbar
+    
+    propsFromApp = {this.sumiterFromForm}
+    />  
+
+    <ImageGallery/>
+    
+      </div>
   );
 };
+}
+export default App
