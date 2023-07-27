@@ -7,9 +7,9 @@ const BASE_URL = 'https://pixabay.com/api';
 
 
 
-const fetchIMG = async searchQuery => {
-  const responseIMG = await axios.get(
-    `${BASE_URL}/?key=${MY_KEY}&q=''&page=1`,
+export const fetchIMG = (searchWord) => {
+  const responseIMG = axios.get(
+    `${BASE_URL}/?key=${MY_KEY}&q=${searchWord}&page=1`,
     {
       params: {
         image_type: 'photo',
@@ -19,11 +19,12 @@ const fetchIMG = async searchQuery => {
       },
     }
   );
-  return responseIMG.data
+  return responseIMG
 }
+// fetchIMG.then(console.log(responseIMG.data))
 
 
 
 
 
-export default fetchIMG
+ 

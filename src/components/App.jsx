@@ -3,8 +3,8 @@ import { ToastContainer } from 'react-toastify';
 // npm i react-toastify
 
 
-import Searchbar from 'components/Searchbar/Searchbar';
-import ImageGallery from './ImageGallery/ImageGallery';
+import Searchbar from './Searchbar';
+import ImageGallery from './ImageGallery';
 // import fetchIMG from 'components/helpers/fenchIMG';
 
 
@@ -19,7 +19,7 @@ class App extends Component {
 
   
   // отримувач з форми запиту і запис у стейт апп
-  submiterFromForm = inputSearch => {
+  submiterFromForm = (inputSearch) => {
     this.setState({ inputSearch });
     console.log("введено - ", inputSearch)
   }
@@ -50,13 +50,11 @@ theme="colored"
 
 {/* {error && <p>Whoops, something went wrong: {error.message}</p>}
         {isLoading && <p>Loading...</p>}
-        {responseIMG.length > 0 && } */}
-
-        <ImageGallery 
-
-searchWord={this.state.inputSearch} 
+        {responseIMG.length > 0 &&  } */}
+        <ImageGallery searchWord={this.state.inputSearch} 
 
 />
+
       </div>
   );
 };
