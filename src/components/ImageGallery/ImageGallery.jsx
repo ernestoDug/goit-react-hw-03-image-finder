@@ -13,16 +13,15 @@ class ImageGallery extends Component {
   };
 
   
-//   componentDidMount() {
-//     fetchIMG(inputValue).then( findImage => this.setState({findImage}))
-//   }
-
+  
   render() {
     return (
     <> 
         {this.state.findImage && 
- <li class="gallery-item">
- <img src="" alt="" />
+ <li class="gallery-item"
+//  key = {id}
+ >
+ <img src="webformatURL" alt="" />
 </li>
   }
     </>

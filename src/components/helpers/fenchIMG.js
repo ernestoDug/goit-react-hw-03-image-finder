@@ -10,7 +10,7 @@ const BASE_URL = 'https://pixabay.com/api';
 
 async function fetchIMG(inputValue, page = 1) {
     // loaderVar.removeAttribute('hidden');
-    const responseIMG = await axios.get(
+        const responseIMG = await axios.get(
       `${BASE_URL}/?key=${MY_KEY}&q=${inputValue}&page=5`,
       {
         params: {

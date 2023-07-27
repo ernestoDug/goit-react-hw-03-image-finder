@@ -1,34 +1,68 @@
+import { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
+// npm i react-toastify
+
+
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
-import { Component } from 'react';
+import fetchIMG from 'components/helpers/fenchIMG';
 
 
 class App extends Component {
 
-  // отримувач з форми
-  sumiterFromForm = findImages => {
+  state = {
+    inputSearch: ''
+  }
 
+  componentDidUpdate( prevState) {
+    // fetchIMG(inputValue).then( findImage => this.setState({findImage}))
+    // перевірка для запиту
+    if(prevState.inputSearch !== this.state.inputSearch) {
+// console.log("стало:", this.state.inputSearch, );
+// console.log("було:",  prevState.inputSearch);
+      fetchIMG(this.state.inputSearch);
+       console.log("pec:",  this.props.fetchIMG());
+
+
+    }
+  }
+
+  // отримувач з форми запиту і запис у стейт апп
+  submiterFromForm = inputSearch => {
+    this.setState({ inputSearch });
+    // console.log("введено - ", inputSearch)
   }
 
 
   render (){
 
- 
-  return (
+   return (
     <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
+      // style={{
+      //   height: '100vh',
+      //   display: 'flex',
+      //   justifyContent: 'center',
+      //   alignItems: 'center',
+      //   fontSize: 20,
+      //   color: '#010101'
+      // }}
     >
     <Searchbar
     
-    propsFromApp = {this.sumiterFromForm}
+    onSubmit  = {this.submiterFromForm}
     />  
+   <ToastContainer
+position="top-center"
+autoClose={2000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+/>
 
     <ImageGallery/>
     

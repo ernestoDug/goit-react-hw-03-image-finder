@@ -5,47 +5,56 @@ import { Component } from 'react';
 
 // import PropTypes from 'prop-types';
 
-// import css from './Filter.module.css';
-
-// let inputValue = "dog";
-
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// npm i react-toastify
+import css from './Searchbar.module.css';
 
 
 class Searchbar extends Component {
   state = {
-    findImages: null,
+    findImages: '',
   };
 
   // шукач
   changer = event => {
+    
     this.setState({findImages: event.currentTarget.value.toLowerCase()});
   }
 
   // відпрвник
 submiter = event => {
-
+  // пропсик від апп для отримання 
   event.preventDefault();
+// умова заборони пустого рядка
+if(this.state.findImages.trim()=== '')
+{
+    
+  toast.info("Треба почати пошук🕵️‍♀️")
+  return
+}
 
-  // пропсик від апп
-this.props.propsFromApp(this.setState.findImages)
-// *********************************************************зупинився на 2018
-  this.setState({findImages: ''})
+this.props.onSubmit(this.state.findImages);
+
+// очищувач форми
+  this.setState({findImages: ''});
 }
 
 
   render() {
     return (
       <>
-        {this.state.findImages && <div> {this.state.findImages}</div>}
-
-        <header className="searchbar">
-          <form className="form">
-            <button type="submit" className="button">
-              <span className="button-label">Search</span>
+        <header className={css.searchbar}>
+          <form 
+          onSubmit={this.submiter}
+          className={css.form}>
+            <button type="submit" 
+            className={css.button}>
+              <span className={css.buttonLab}>Шукати</span>
             </button>
 
             <input
-              className="input"
+              className={css.input}
               type="text"
               // autocomplete="off"
               // autofocus
