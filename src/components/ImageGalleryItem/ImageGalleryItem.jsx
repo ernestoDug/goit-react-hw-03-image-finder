@@ -22,17 +22,21 @@ class ImageGalleryItem extends Component {
     if (prevprops.searchWord !== this.props.searchWord) {
       //  вмикання  лодеря...
       this.setState({ loading: true });
+
       try {
         const respImg = await fetchIMG(this.props.searchWord);
         fetchIMG(this.props.searchWord).then(respImg => {
           // якщо прийшло без помилки
           if (respImg.request.status === 200) {
             this.setState({ findImage: respImg.data.hits });
-            // console.log(respImg.request.status, 'mes1');
+            // що знайшли
+            if(respImg.request.status === 200 && respImg.data.hits.length !== 0)
+             toast.success(`🐒Ми знайшли ${respImg.data.totalHits}бана..., світлин🐒`);
           }
-          if(respImg.data.hits.length === 0)
-          {        toast.warn(`🐒Ми нічого не знайшли🐒`);
-        }
+          // нічого не знайшли
+          if (respImg.data.hits.length === 0) {
+            toast.warn(`🐒Ми нічого не знайшли🐒`);
+          }
         });
         return respImg;
       } catch (error) {
@@ -48,11 +52,11 @@ class ImageGalleryItem extends Component {
   }
 
   render() {
-    const { findImage } = this.state;
+    const { findImage, loading } = this.state;
     return (
-      <>
-        {this.state.loading && <Loader />}
-        {this.state.findImage &&
+            <>
+        {loading && <Loader />}
+        {findImage &&
           findImage.map(({ id, webformatURL, largeImageURL, tags }) => {
             return (
               <li key={id} className={css.galleryItem}>
