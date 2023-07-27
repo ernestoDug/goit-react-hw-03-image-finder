@@ -7,21 +7,23 @@ const BASE_URL = 'https://pixabay.com/api';
 
 
 
-
-async function fetchIMG(inputValue, page = 1) {
-    // loaderVar.removeAttribute('hidden');
-        const responseIMG = await axios.get(
-      `${BASE_URL}/?key=${MY_KEY}&q=${inputValue}&page=5`,
-      {
-        params: {
-          image_type: 'photo',
-          orientation: 'horizontal',
-          safesearch: 'true',
-          per_page: 12,
-        },
-      }
-    );
-    return responseIMG
+const fetchIMG = async searchQuery => {
+  const responseIMG = await axios.get(
+    `${BASE_URL}/?key=${MY_KEY}&q=''&page=1`,
+    {
+      params: {
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: 'true',
+        per_page: 12,
+      },
+    }
+  );
+  return responseIMG.data
 }
+
+
+
+
 
 export default fetchIMG

@@ -12,8 +12,30 @@ class ImageGallery extends Component {
     findImage: null,
   };
 
+   componentDidUpdate(prevprops, prevState) {
+    console.log('prVpr', this.props)
+    // this.setState({ isLoding: true });
+    //     fetchIMG(inputValue).then( findImage => this.setState({findImage}))
+    // // перевірка для запиту по пропсу від ап
+    // if(prevprops.searchWord !== this.props.searchWord) {
+    //   try {
+    //     const responseIMG = fetchIMG("cat");
+    //     this.setState({ responseIMG });
+    //   } catch (error) {
+    //     this.setState({ error });
+    //   } finally {
+    //     this.setState({ isLoading: false });
+    //   }
+    // }
   
+  }
   
+
+
+
+
+
+
   render() {
     return (
     <> 

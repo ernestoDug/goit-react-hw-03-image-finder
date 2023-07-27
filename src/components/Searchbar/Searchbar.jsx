@@ -1,6 +1,7 @@
 // import index from "./Searchbar/Searchbar";
-
 import { Component } from 'react';
+
+
 // import fetchIMG from 'components/helpers/fenchIMG';
 
 // import PropTypes from 'prop-types';
@@ -19,20 +20,20 @@ class Searchbar extends Component {
   // шукач
   changer = event => {
     
-    this.setState({findImages: event.currentTarget.value.toLowerCase()});
+    this.setState({findImages: event.target.value.toLowerCase()});
   }
 
   // відпрвник
 submiter = event => {
-  // пропсик від апп для отримання 
   event.preventDefault();
-// умова заборони пустого рядка
-if(this.state.findImages.trim()=== '')
-{
+  // умова заборони пустого рядка
+  if(this.state.findImages.trim()=== '')
+  {
     
-  toast.info("Треба почати пошук🕵️‍♀️")
-  return
-}
+    toast.info("Треба почати пошук🕵️‍♀️")
+    return
+  }
+  // пропсик від апп для отримання 
 
 this.props.onSubmit(this.state.findImages);
 

@@ -5,51 +5,35 @@ import { ToastContainer } from 'react-toastify';
 
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
-import fetchIMG from 'components/helpers/fenchIMG';
+// import fetchIMG from 'components/helpers/fenchIMG';
 
 
 class App extends Component {
 
   state = {
-    inputSearch: ''
+    inputSearch: '',
+    responseIMG: [],
+    isLoading: false,
+    error: null,
   }
 
-  componentDidUpdate( prevState) {
-    // fetchIMG(inputValue).then( findImage => this.setState({findImage}))
-    // перевірка для запиту
-    if(prevState.inputSearch !== this.state.inputSearch) {
-// console.log("стало:", this.state.inputSearch, );
-// console.log("було:",  prevState.inputSearch);
-      fetchIMG(this.state.inputSearch);
-       console.log("pec:",  this.props.fetchIMG());
-
-
-    }
-  }
-
+  
   // отримувач з форми запиту і запис у стейт апп
   submiterFromForm = inputSearch => {
     this.setState({ inputSearch });
-    // console.log("введено - ", inputSearch)
+    console.log("введено - ", inputSearch)
   }
 
 
   render (){
+    // const { responseIMG, isLoading, error } = this.state;
 
    return (
     <div
-      // style={{
-      //   height: '100vh',
-      //   display: 'flex',
-      //   justifyContent: 'center',
-      //   alignItems: 'center',
-      //   fontSize: 20,
-      //   color: '#010101'
-      // }}
+ 
     >
     <Searchbar
-    
-    onSubmit  = {this.submiterFromForm}
+        onSubmit  = {this.submiterFromForm}
     />  
    <ToastContainer
 position="top-center"
@@ -64,8 +48,15 @@ pauseOnHover
 theme="colored"
 />
 
-    <ImageGallery/>
-    
+{/* {error && <p>Whoops, something went wrong: {error.message}</p>}
+        {isLoading && <p>Loading...</p>}
+        {responseIMG.length > 0 && } */}
+
+        <ImageGallery 
+
+searchWord={this.state.inputSearch} 
+
+/>
       </div>
   );
 };
