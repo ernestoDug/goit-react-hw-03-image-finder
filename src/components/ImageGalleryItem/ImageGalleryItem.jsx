@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Component } from 'react';
 import { fetchIMG } from '../helpers/fenchIMG';
 import Loader from 'components/Loader/Loader';
+import Modal from 'components/Modal/Modal';
+
 
 // import PropTypes from 'prop-types';
 
@@ -15,14 +17,23 @@ class ImageGalleryItem extends Component {
     findImage: [],
     loading: false,
     error: null,
+    showMod: false,
   };
+
+  // відкривач модалу
+  modalOpen = ()=>
+  {
+    this.setState({showMod: true})
+  }
+
+
 
   async componentDidUpdate(prevprops, prevState) {
     console.log('prVpr', this.props);
     if (prevprops.searchWord !== this.props.searchWord) {
       //  вмикання  лодеря...
       this.setState({ loading: true });
-
+// запит
       try {
         const respImg = await fetchIMG(this.props.searchWord);
         fetchIMG(this.props.searchWord).then(respImg => {
@@ -31,18 +42,18 @@ class ImageGalleryItem extends Component {
             this.setState({ findImage: respImg.data.hits });
             // що знайшли
             if(respImg.request.status === 200 && respImg.data.hits.length !== 0)
-             toast.success(`🐒Ми знайшли ${respImg.data.totalHits}бана..., світлин🐒`);
+             toast.success(`🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`);
           }
           // нічого не знайшли
           if (respImg.data.hits.length === 0) {
-            toast.warn(`🐒Ми нічого не знайшли🐒`);
+            toast.warn(`🐒 Ми нічого не знайшли 🐒`);
           }
         });
         return respImg;
       } catch (error) {
         // console.log(respImg.statusText,"txt")
         this.setState({ error });
-        toast.warn(`🐒Отакої! ${error}🐒`);
+        toast.warn(`🐒Отакої! ${error} 🐒`);
       } finally {
         // вимикання лодеря
         this.setState({ loading: false });
@@ -50,7 +61,7 @@ class ImageGalleryItem extends Component {
       // console.log(respImg, 'відповідь');
     }
   }
-
+  
   render() {
     const { findImage, loading } = this.state;
     return (
@@ -58,15 +69,26 @@ class ImageGalleryItem extends Component {
         {loading && <Loader />}
         {findImage &&
           findImage.map(({ id, webformatURL, largeImageURL, tags }) => {
-            return (
-              <li key={id} className={css.galleryItem}>
+                        return (
+              <li key={id} className={css.galleryItem}
+              onClick ={ ()=>{this.modalOpen()}}
+              
+              >
                 <img
                   className={css.imageGalleryItemImage}
                   src={webformatURL}
                   alt={tags}
                 />
+              {this.state.showMod && <Modal
+              largeImageURL={largeImageURL}
+              tag={tags}
+            
+              
+              /> 
+
+                 }
               </li>
-            );
+              );
           })}
       </>
     );

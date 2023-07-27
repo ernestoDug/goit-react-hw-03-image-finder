@@ -5,8 +5,6 @@ import { ToastContainer } from 'react-toastify';
 
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
-// import fetchIMG from 'components/helpers/fenchIMG';
-
 
 class App extends Component {
 
@@ -14,7 +12,8 @@ class App extends Component {
     inputSearch: '',
     responseIMG: [],
     isLoading: false,
-    error: null,
+    
+  
   }
 
   
@@ -23,6 +22,11 @@ class App extends Component {
     this.setState({ inputSearch });
     console.log("введено - ", inputSearch)
   }
+// отримувач великого Урла
+  modalDonor = (largeImageURLProp) => {
+this.setState({modalURL: largeImageURLProp})
+  }
+
 
 
   render (){
@@ -47,13 +51,12 @@ draggable
 pauseOnHover
 theme="colored"
 />
-
-{/* {error && <p>Whoops, something went wrong: {error.message}</p>}
-        {isLoading && <p>Loading...</p>}
-        {responseIMG.length > 0 &&  } */}
-        <ImageGallery searchWord={this.state.inputSearch} 
+        <ImageGallery 
+        searchWord={this.state.inputSearch} 
+showModProp={this.showMod}
 
 />
+
 
       </div>
   );
