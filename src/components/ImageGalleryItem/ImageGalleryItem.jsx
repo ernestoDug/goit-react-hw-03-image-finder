@@ -18,19 +18,21 @@ class ImageGalleryItem extends Component {
     error: null,
     showMod: false,
     closMod: true,
+    modalURL: ''
+
   };
 
   // відкривач модалу
-  modalOpen = () => {
-    this.setState({ showMod: true });
+  modalOpen = (largeImageURL) => {
+    this.setState({ showMod: true, modalURL: largeImageURL});
   };
   // закривача модалу
   modalClos = () => {
     this.setState({ showMod: false });
     console.log('fdddddddddddddd');
   };
-
-  async componentDidUpdate(prevprops, prevState) {
+// запит
+  async componentDidUpdate(prevprops) {
     console.log('prVpr', this.props);
     if (prevprops.searchWord !== this.props.searchWord) {
       //  вмикання  лодеря...
@@ -69,26 +71,30 @@ class ImageGalleryItem extends Component {
     }
   }
 
+    
   render() {
     const { findImage, loading } = this.state;
     return (
       <>
-        {loading && <Loader />}
+{/* лоадер умова */}
+{loading && (findImage.map(({id}) => { return  <li key={id} ><Loader/></li> }))}
+{/* галерея умова */}
         {findImage &&
           findImage.map(({ id, webformatURL, largeImageURL, tags }) => {
             return (
               <li key={id} className={css.galleryItem}>
                 <img
-                  onClick={() => {
-                    this.modalOpen();
+                   onClick={() => {
+                    this.modalOpen(largeImageURL);
                   }}
                   className={css.imageGalleryItemImage}
                   src={webformatURL}
                   alt={tags}
                 />
+                {/* поява модалки */}
                 {this.state.showMod && (
                   <Modal
-                    largeImageURL={largeImageURL}
+                    largeImageURL={this.state.modalURL}
                     tag={tags}
                     modalCloser={this.modalClos}
                   />

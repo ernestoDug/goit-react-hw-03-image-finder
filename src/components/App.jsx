@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
+import Button from './Button';
 
 class App extends Component {
   state = {
@@ -17,13 +18,9 @@ class App extends Component {
     this.setState({ inputSearch });
     console.log('введено - ', inputSearch);
   };
-  // отримувач великого Урла
-  modalDonor = largeImageURLProp => {
-    this.setState({ modalURL: largeImageURLProp });
-  };
 
   render() {
-    // const { responseIMG, isLoading, error } = this.state;
+    const { responseIMG,  inputSearch,  } = this.state;
 
     return (
       <div>
@@ -41,9 +38,11 @@ class App extends Component {
           theme="colored"
         />
         <ImageGallery
-          searchWord={this.state.inputSearch}
+          searchWord={inputSearch}
           showModProp={this.showMod}
         />
+        {responseIMG.length !==0  && (<Button/>)}
+      
       </div>
     );
   }

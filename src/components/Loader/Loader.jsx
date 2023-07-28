@@ -2,7 +2,7 @@
 import { BulletList  } from 'react-content-loader'
 // npm i react-content-loadery
 
-const Loader = (props) => (
+const Loader = ({props}) => (
   <BulletList  
   height={140}
   speed={1}
