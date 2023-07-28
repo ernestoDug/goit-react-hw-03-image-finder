@@ -13,11 +13,20 @@ class App extends Component {
     isLoading: false,
   };
 
+
   // отримувач з форми запиту і запис у стейт апп
   submiterFromForm = inputSearch => {
     this.setState({ inputSearch });
-    console.log('введено - ', inputSearch);
+    // console.log('введено - ', inputSearch);
   };
+
+// метод для пропсу айтемам для галереї
+  imageFromGalery = responseIMG => {
+    this.setState({ responseIMG });
+  };
+
+
+
 
   render() {
     const { responseIMG,  inputSearch,  } = this.state;
@@ -39,9 +48,14 @@ class App extends Component {
         />
         <ImageGallery
           searchWord={inputSearch}
-          showModProp={this.showMod}
+// метод пропс для галерії
+          responseIMG = {this.imageFromGalery}
         />
-        {responseIMG.length !==0  && (<Button/>)}
+{/* кнопка */}
+        {responseIMG.length !== 0 && <Button
+        inputSearchPr = {this.state.inputSearch}
+        
+        />}
       
       </div>
     );

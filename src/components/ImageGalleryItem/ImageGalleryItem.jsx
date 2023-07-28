@@ -6,7 +6,6 @@ import { Component } from 'react';
 import { fetchIMG } from '../helpers/fenchIMG';
 import Loader from 'components/Loader/Loader';
 import Modal from 'components/Modal/Modal';
-
 // import PropTypes from 'prop-types';
 
 import css from './ImageGalleryItem.module.css';
@@ -21,7 +20,6 @@ class ImageGalleryItem extends Component {
     modalURL: ''
 
   };
-
   // відкривач модалу
   modalOpen = (largeImageURL) => {
     this.setState({ showMod: true, modalURL: largeImageURL});
@@ -29,10 +27,11 @@ class ImageGalleryItem extends Component {
   // закривача модалу
   modalClos = () => {
     this.setState({ showMod: false });
-    console.log('fdddddddddddddd');
+    // console.log('cls');
   };
 // запит
   async componentDidUpdate(prevprops) {
+    
     console.log('prVpr', this.props);
     if (prevprops.searchWord !== this.props.searchWord) {
       //  вмикання  лодеря...
@@ -48,29 +47,30 @@ class ImageGalleryItem extends Component {
             if (
               respImg.request.status === 200 &&
               respImg.data.hits.length !== 0
-            )
+              )
               toast.success(
                 `🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`
-              );
-          }
-          // нічого не знайшли
-          if (respImg.data.hits.length === 0) {
-            toast.warn(`🐒 Ми нічого не знайшли 🐒`);
-          }
-        });
-        return respImg;
-      } catch (error) {
-        // console.log(respImg.statusText,"txt")
-        this.setState({ error });
-        toast.warn(`🐒Отакої! ${error} 🐒`);
-      } finally {
-        // вимикання лодеря
-        this.setState({ loading: false });
+                );
+              }
+              // нічого не знайшли
+              if (respImg.data.hits.length === 0) {
+                toast.warn(`🐒 Ми нічого не знайшли 🐒`);
+              }
+            });
+            return respImg;
+          } catch (error) {
+            // console.log(respImg.statusText,"txt")
+            this.setState({ error });
+            toast.warn(`🐒Отакої! ${error} 🐒`);
+          } finally {
+            // вимикання лодеря
+            this.setState({ loading: false });
       }
       // console.log(respImg, 'відповідь');
-    }
+          }
+          // виклик методу пропсу для передачі галерії
+          this.props.responseIMG(this.state.findImage)
   }
-
     
   render() {
     const { findImage, loading } = this.state;

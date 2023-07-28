@@ -5,11 +5,17 @@ import css from './ImageGallery.module.css';
 
 
 
-const ImageGallery = ({ searchWord }) => {
+const ImageGallery = ({ searchWord, responseIMG }) => {
   return (
     <>
     <ul className={css.gallery}>
-      <ImageGalleryItem searchWord={searchWord} />
+      <ImageGalleryItem 
+      // перекидаю
+      searchWord={searchWord} 
+      // переидаю 
+      responseIMG={responseIMG}
+      
+      />
     </ul>
  
   </>

@@ -7,11 +7,12 @@ const BASE_URL = 'https://pixabay.com/api';
 
 
 
-export const fetchIMG = (searchWord) => {
+export const fetchIMG = (searchWord, page) => {
   const responseIMG = axios.get(
-    `${BASE_URL}/?key=${MY_KEY}&q=${searchWord}&page=1`,
+    `${BASE_URL}/?key=${MY_KEY}&q=${searchWord}&page=${page}`,
     {
       params: {
+        page: 1,
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: 'true',
