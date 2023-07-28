@@ -1,22 +1,12 @@
 import css from './ImageGallery.module.css';
 
-
-import ImageGalleryItem from "../ImageGalleryItem"
-const ImageGallery = ({searchWord}) =>
-{
-
-    return (
+import ImageGalleryItem from '../ImageGalleryItem';
+const ImageGallery = ({ searchWord }) => {
+  return (
     <ul className={css.gallery}>
-<ImageGalleryItem
-searchWord = {searchWord}
-/>
+      <ImageGalleryItem searchWord={searchWord} />
+    </ul>
+  );
+};
 
-</ul>
-    )
-}
-
-
-
-
-export default ImageGallery
-
+export default ImageGallery;

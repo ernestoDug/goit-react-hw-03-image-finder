@@ -7,7 +7,6 @@ import { fetchIMG } from '../helpers/fenchIMG';
 import Loader from 'components/Loader/Loader';
 import Modal from 'components/Modal/Modal';
 
-
 // import PropTypes from 'prop-types';
 
 import css from './ImageGalleryItem.module.css';
@@ -18,22 +17,25 @@ class ImageGalleryItem extends Component {
     loading: false,
     error: null,
     showMod: false,
+    closMod: true,
   };
 
   // відкривач модалу
-  modalOpen = ()=>
-  {
-    this.setState({showMod: true})
-  }
-
-
+  modalOpen = () => {
+    this.setState({ showMod: true });
+  };
+  // закривача модалу
+  modalClos = () => {
+    this.setState({ showMod: false });
+    console.log('fdddddddddddddd');
+  };
 
   async componentDidUpdate(prevprops, prevState) {
     console.log('prVpr', this.props);
     if (prevprops.searchWord !== this.props.searchWord) {
       //  вмикання  лодеря...
       this.setState({ loading: true });
-// запит
+      // запит
       try {
         const respImg = await fetchIMG(this.props.searchWord);
         fetchIMG(this.props.searchWord).then(respImg => {
@@ -41,8 +43,13 @@ class ImageGalleryItem extends Component {
           if (respImg.request.status === 200) {
             this.setState({ findImage: respImg.data.hits });
             // що знайшли
-            if(respImg.request.status === 200 && respImg.data.hits.length !== 0)
-             toast.success(`🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`);
+            if (
+              respImg.request.status === 200 &&
+              respImg.data.hits.length !== 0
+            )
+              toast.success(
+                `🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`
+              );
           }
           // нічого не знайшли
           if (respImg.data.hits.length === 0) {
@@ -61,34 +68,33 @@ class ImageGalleryItem extends Component {
       // console.log(respImg, 'відповідь');
     }
   }
-  
+
   render() {
     const { findImage, loading } = this.state;
     return (
-            <>
+      <>
         {loading && <Loader />}
         {findImage &&
           findImage.map(({ id, webformatURL, largeImageURL, tags }) => {
-                        return (
-              <li key={id} className={css.galleryItem}
-              onClick ={ ()=>{this.modalOpen()}}
-              
-              >
+            return (
+              <li key={id} className={css.galleryItem}>
                 <img
+                  onClick={() => {
+                    this.modalOpen();
+                  }}
                   className={css.imageGalleryItemImage}
                   src={webformatURL}
                   alt={tags}
                 />
-              {this.state.showMod && <Modal
-              largeImageURL={largeImageURL}
-              tag={tags}
-            
-              
-              /> 
-
-                 }
+                {this.state.showMod && (
+                  <Modal
+                    largeImageURL={largeImageURL}
+                    tag={tags}
+                    modalCloser={this.modalClos}
+                  />
+                )}
               </li>
-              );
+            );
           })}
       </>
     );
