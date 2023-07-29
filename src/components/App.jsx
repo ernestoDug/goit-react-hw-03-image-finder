@@ -5,25 +5,37 @@ import { ToastContainer } from 'react-toastify';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
+// import { fetchIMG } from './helpers/fetchIMG';
 
 class App extends Component {
   state = {
     inputSearch: '',
     responseIMG: [],
     isLoading: false,
-  };
+    pagCur: 4
+      };
 
 
-  // отримувач з форми запиту і запис у стейт апп
+  // отримувач з форми запиту і запис у стейт 
   submiterFromForm = inputSearch => {
     this.setState({ inputSearch });
     // console.log('введено - ', inputSearch);
   };
 
-// метод для пропсу айтемам для галереї
+// метод-пропс айтемам для галереї
   imageFromGalery = responseIMG => {
     this.setState({ responseIMG });
+
   };
+
+  // метод для пропсу завантажити ще
+  imageFromGaleryPag = (pagImages) => {
+    this.setState(prevState => {
+      console.log(pagImages, "pagBum")
+      return { responseIMG: [...prevState.responseIMG,  ...pagImages]  };
+    });
+  
+  }; 
 
 
 
@@ -49,12 +61,16 @@ class App extends Component {
         <ImageGallery
           searchWord={inputSearch}
 // метод пропс для галерії
-          responseIMG = {this.imageFromGalery}
+          imageFromGalery = {this.imageFromGalery}
+          // 888888888888
+          responseIMG = {this.state.responseIMG}
+
         />
 {/* кнопка */}
         {responseIMG.length !== 0 && <Button
         inputSearchPr = {this.state.inputSearch}
-        
+        // метод пропс
+        imageFromGaleryPag = {this.imageFromGaleryPag}
         />}
       
       </div>

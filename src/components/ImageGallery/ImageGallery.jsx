@@ -5,7 +5,7 @@ import css from './ImageGallery.module.css';
 
 
 
-const ImageGallery = ({ searchWord, responseIMG }) => {
+const ImageGallery = ({ searchWord, imageFromGalery }) => {
   return (
     <>
     <ul className={css.gallery}>
@@ -13,8 +13,9 @@ const ImageGallery = ({ searchWord, responseIMG }) => {
       // перекидаю
       searchWord={searchWord} 
       // переидаю 
-      responseIMG={responseIMG}
-      
+      imageFromGalery={imageFromGalery}
+  
+   
       />
     </ul>
  

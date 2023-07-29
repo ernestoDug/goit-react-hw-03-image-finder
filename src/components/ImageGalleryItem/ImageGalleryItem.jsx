@@ -3,7 +3,8 @@ import 'react-toastify/dist/ReactToastify.css';
 // npm i react-toastify
 
 import { Component } from 'react';
-import { fetchIMG } from '../helpers/fenchIMG';
+
+import { fetchIMG } from '../helpers/fetchIMG';
 import Loader from 'components/Loader/Loader';
 import Modal from 'components/Modal/Modal';
 // import PropTypes from 'prop-types';
@@ -17,14 +18,14 @@ class ImageGalleryItem extends Component {
     error: null,
     showMod: false,
     closMod: true,
-    modalURL: ''
+    modalURL: '',
 
   };
   // відкривач модалу
   modalOpen = (largeImageURL) => {
     this.setState({ showMod: true, modalURL: largeImageURL});
   };
-  // закривача модалу
+  // закривач модалу
   modalClos = () => {
     this.setState({ showMod: false });
     // console.log('cls');
@@ -32,17 +33,21 @@ class ImageGalleryItem extends Component {
 // запит
   async componentDidUpdate(prevprops) {
     
-    console.log('prVpr', this.props);
+    // console.log('prVpr', this.props);
     if (prevprops.searchWord !== this.props.searchWord) {
       //  вмикання  лодеря...
       this.setState({ loading: true });
       // запит
       try {
-        const respImg = await fetchIMG(this.props.searchWord);
+
+        const respImg = await 
         fetchIMG(this.props.searchWord).then(respImg => {
           // якщо прийшло без помилки
           if (respImg.request.status === 200) {
-            this.setState({ findImage: respImg.data.hits });
+            // виклик методу пропсу для передачі галерії
+            this.setState({ findImage: respImg.data.hits});
+            this.props.imageFromGalery(respImg.data.hits);
+       
             // що знайшли
             if (
               respImg.request.status === 200 &&
@@ -68,13 +73,13 @@ class ImageGalleryItem extends Component {
       }
       // console.log(respImg, 'відповідь');
           }
-          // виклик методу пропсу для передачі галерії
-          this.props.responseIMG(this.state.findImage)
-  }
+              }
+
+          
     
   render() {
     const { findImage, loading } = this.state;
-    return (
+        return (
       <>
 {/* лоадер умова */}
 {loading && (findImage.map(({id}) => { return  <li key={id} ><Loader/></li> }))}
@@ -84,6 +89,7 @@ class ImageGalleryItem extends Component {
             return (
               <li key={id} className={css.galleryItem}>
                 <img
+                // адреса великого з
                    onClick={() => {
                     this.modalOpen(largeImageURL);
                   }}
