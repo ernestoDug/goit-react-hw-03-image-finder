@@ -12,36 +12,32 @@ class App extends Component {
     inputSearch: '',
     responseIMG: [],
     isLoading: false,
-    pagCur: 4
-      };
+    pagCur: 4,
+  };
 
-
-  // отримувач з форми запиту і запис у стейт 
+  // отримувач з форми запиту і запис у стейт
   submiterFromForm = inputSearch => {
     this.setState({ inputSearch });
     // console.log('введено - ', inputSearch);
   };
 
-// метод-пропс айтемам для галереї
+  // метод-пропс айтемам для галереї
   imageFromGalery = responseIMG => {
     this.setState({ responseIMG });
-
   };
 
   // метод для пропсу завантажити ще
-  imageFromGaleryPag = (pagImages) => {
+  imageFromGaleryPag = pagImages => {
     this.setState(prevState => {
-      console.log(pagImages, "pagBum")
-      return { responseIMG: [...prevState.responseIMG,  ...pagImages]  };
+      console.log(pagImages, 'pagBum');
+      console.log(this.state.inputSearch, 'inp');
+
+      return { responseIMG: [...prevState.responseIMG, ...pagImages] };
     });
-  
-  }; 
-
-
-
+  };
 
   render() {
-    const { responseIMG,  inputSearch,  } = this.state;
+    const { responseIMG, inputSearch } = this.state;
 
     return (
       <div>
@@ -60,19 +56,19 @@ class App extends Component {
         />
         <ImageGallery
           searchWord={inputSearch}
-// метод пропс для галерії
-          imageFromGalery = {this.imageFromGalery}
+          // метод пропс для галерії
+          imageFromGalery={this.imageFromGalery}
           // 888888888888
-          responseIMG = {this.state.responseIMG}
-
+          responseIMG={this.state.responseIMG}
         />
-{/* кнопка */}
-        {responseIMG.length !== 0 && <Button
-        inputSearchPr = {this.state.inputSearch}
-        // метод пропс
-        imageFromGaleryPag = {this.imageFromGaleryPag}
-        />}
-      
+        {/* кнопка */}
+        {responseIMG.length !== 0 && (
+          <Button
+            inputSearchPr={this.state.inputSearch}
+            // метод пропс попвнення галереї
+            imageFromGaleryPag={this.imageFromGaleryPag}
+          />
+        )}
       </div>
     );
   }

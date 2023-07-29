@@ -19,95 +19,101 @@ class ImageGalleryItem extends Component {
     showMod: false,
     closMod: true,
     modalURL: '',
-
   };
   // відкривач модалу
-  modalOpen = (largeImageURL) => {
-    this.setState({ showMod: true, modalURL: largeImageURL});
+  modalOpen = largeImageURL => {
+    this.setState({ showMod: true, modalURL: largeImageURL });
   };
   // закривач модалу
   modalClos = () => {
     this.setState({ showMod: false });
     // console.log('cls');
   };
-// запит
+  // запит
   async componentDidUpdate(prevprops) {
-    
     // console.log('prVpr', this.props);
     if (prevprops.searchWord !== this.props.searchWord) {
       //  вмикання  лодеря...
       this.setState({ loading: true });
+
       // запит
       try {
+        const respImg = await fetchIMG(this.props.searchWord, 1).then(
+          respImg => {
+            // якщо прийшло без помилки
+            if (respImg.request.status === 200) {
+              // виклик методу пропсу для передачі галерії
+              this.setState({ findImage: respImg.data.hits });
+              this.props.imageFromGalery(respImg.data.hits);
 
-        const respImg = await 
-        fetchIMG(this.props.searchWord).then(respImg => {
-          // якщо прийшло без помилки
-          if (respImg.request.status === 200) {
-            // виклик методу пропсу для передачі галерії
-            this.setState({ findImage: respImg.data.hits});
-            this.props.imageFromGalery(respImg.data.hits);
-       
-            // що знайшли
-            if (
-              respImg.request.status === 200 &&
-              respImg.data.hits.length !== 0
+              // що знайшли
+              if (
+                respImg.request.status === 200 &&
+                respImg.data.hits.length !== 0
               )
-              toast.success(
-                `🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`
+                toast.success(
+                  `🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`
                 );
-              }
-              // нічого не знайшли
-              if (respImg.data.hits.length === 0) {
-                toast.warn(`🐒 Ми нічого не знайшли 🐒`);
-              }
-            });
-            return respImg;
-          } catch (error) {
-            // console.log(respImg.statusText,"txt")
-            this.setState({ error });
-            toast.warn(`🐒Отакої! ${error} 🐒`);
-          } finally {
-            // вимикання лодеря
-            this.setState({ loading: false });
+            }
+            // нічого не знайшли
+            if (respImg.data.hits.length === 0) {
+              toast.warn(`🐒 Ми нічого не знайшли 🐒`);
+            }
+          }
+        );
+        return respImg;
+      } catch (error) {
+        // console.log(respImg.statusText,"txt")
+        this.setState({ error });
+        toast.warn(`🐒Отакої! ${error} 🐒`);
+      } finally {
+        // вимикання лодеря
+        this.setState({ loading: false });
       }
       // console.log(respImg, 'відповідь');
-          }
-              }
+    }
+  }
 
-          
-    
   render() {
     const { findImage, loading } = this.state;
-        return (
+    return (
       <>
-{/* лоадер умова */}
-{loading && (findImage.map(({id}) => { return  <li key={id} ><Loader/></li> }))}
-{/* галерея умова */}
-        {findImage &&
-          findImage.map(({ id, webformatURL, largeImageURL, tags }) => {
+        {/* лоадер умова */}
+        {loading &&
+          findImage.map(({ id }) => {
             return (
-              <li key={id} className={css.galleryItem}>
-                <img
-                // адреса великого з
-                   onClick={() => {
-                    this.modalOpen(largeImageURL);
-                  }}
-                  className={css.imageGalleryItemImage}
-                  src={webformatURL}
-                  alt={tags}
-                />
-                {/* поява модалки */}
-                {this.state.showMod && (
-                  <Modal
-                    largeImageURL={this.state.modalURL}
-                    tag={tags}
-                    modalCloser={this.modalClos}
-                  />
-                )}
+              <li key={id}>
+                <Loader />
               </li>
             );
           })}
+        {/* галерея умова */}
+        {this.props.responseIMG &&
+          this.props.responseIMG.map(
+            ({ id, webformatURL, largeImageURL, tags }) => {
+              return (
+                <li key={id} className={css.galleryItem}>
+                  <img
+                    // адреса великого з
+                    onClick={() => {
+                      this.modalOpen(largeImageURL);
+                    }}
+                    className={css.imageGalleryItemImage}
+                    src={webformatURL}
+                    alt={tags}
+                  />
+                  {/* поява модалки */}
+                  {this.state.showMod && (
+                    <Modal
+                      largeImageURL={this.state.modalURL}
+                      tag={tags}
+                      modalCloser={this.modalClos}
+                    />
+                  )}
+                </li>
+              );
+            }
+          )}
       </>
     );
   }
