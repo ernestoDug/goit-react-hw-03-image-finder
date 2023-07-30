@@ -12,7 +12,6 @@ class App extends Component {
     inputSearch: '',
     responseIMG: [],
     isLoading: false,
-    pagCur: 4,
   };
 
   // отримувач з форми запиту і запис у стейт
@@ -29,9 +28,8 @@ class App extends Component {
   // метод для пропсу завантажити ще
   imageFromGaleryPag = pagImages => {
     this.setState(prevState => {
-      console.log(pagImages, 'pagBum');
-      console.log(this.state.inputSearch, 'inp');
-
+      // console.log(pagImages, 'pagBum');
+      // console.log(this.state.inputSearch, 'inp');
       return { responseIMG: [...prevState.responseIMG, ...pagImages] };
     });
   };
@@ -58,13 +56,12 @@ class App extends Component {
           searchWord={inputSearch}
           // метод пропс для галерії
           imageFromGalery={this.imageFromGalery}
-          // 888888888888
-          responseIMG={this.state.responseIMG}
+          responseIMG={responseIMG}
         />
         {/* кнопка */}
         {responseIMG.length !== 0 && (
           <Button
-            inputSearchPr={this.state.inputSearch}
+            inputSearchPr={inputSearch}
             // метод пропс попвнення галереї
             imageFromGaleryPag={this.imageFromGaleryPag}
           />

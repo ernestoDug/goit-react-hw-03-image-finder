@@ -1,5 +1,7 @@
 import ImageGalleryItem from '../ImageGalleryItem';
 
+import PropTypes from 'prop-types';
+
 import css from './ImageGallery.module.css';
 
 const ImageGallery = ({ searchWord, imageFromGalery, responseIMG }) => {
@@ -16,6 +18,13 @@ const ImageGallery = ({ searchWord, imageFromGalery, responseIMG }) => {
       </ul>
     </>
   );
+};
+
+// проптайпи
+ImageGallery.propTypes = {
+  searchWord: PropTypes.string.isRequired,
+  imageFromGalery: PropTypes.func.isRequired,
+  responseIMG: PropTypes.array.isRequired,
 };
 
 export default ImageGallery;

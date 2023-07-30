@@ -1,16 +1,11 @@
-// import index from "./Searchbar/Searchbar";
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
-
-// import fetchIMG from 'components/helpers/fenchIMG';
-
-// import PropTypes from 'prop-types';
-
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // npm i react-toastify
-import css from './Searchbar.module.css';
 
+import css from './Searchbar.module.css';
 
 class Searchbar extends Component {
   state = {
@@ -19,38 +14,32 @@ class Searchbar extends Component {
 
   // шукач
   changer = event => {
-    
-    this.setState({findImages: event.target.value.toLowerCase()});
-  }
+    this.setState({ findImages: event.target.value.toLowerCase() });
+  };
 
   // відпрвник
-submiter = event => {
-  event.preventDefault();
-  // умова заборони пустого рядка
-  if(this.state.findImages.trim()=== '')
-  {
-    
-    toast.info("🙊Треба почати пошук🙊")
-    return
-  }
-  // пропсик від апп для отримання 
+  submiter = event => {
+    const { findImages } = this.state;
+    event.preventDefault();
+    // умова заборони пустого рядка
+    if (findImages.trim() === '') {
+      toast.info('🙊Треба почати пошук🙊');
+      return;
+    }
+    // пропсик від апп для отримання
 
-this.props.onSubmit(this.state.findImages);
+    this.props.onSubmit(findImages);
 
-// очищувач форми
-  this.setState({findImages: ''});
-}
-
+    // очищувач форми
+    this.setState({ findImages: '' });
+  };
 
   render() {
     return (
       <>
         <header className={css.searchbar}>
-          <form 
-          onSubmit={this.submiter}
-          className={css.form}>
-            <button type="submit" 
-            className={css.button}>
+          <form onSubmit={this.submiter} className={css.form}>
+            <button type="submit" className={css.button}>
               <span className={css.buttonLab}>Шукати</span>
             </button>
 
@@ -69,30 +58,10 @@ this.props.onSubmit(this.state.findImages);
     );
   }
 }
-export  default Searchbar
 
+// проптайпи
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
-
-
-
-  // запит          
-  // componentDidMount() {
-  //   //   loaderVar.removeAttribute('hidden');
-  //   const responseImg = axios.get(
-  //     'https://pixabay.com/api/?q=cat&page=1&key=28539247-0afb9c376c93f2bc11eaacc3c&image_type=photo&orientation=horizontal&per_page=12',
-  //     {
-  //       // ${currentPage}
-  //       params: {
-  //         image_type: 'photo',
-  //         orientation: 'horizontal',
-  //         safesearch: 'true',
-  //         per_page: 12,
-  //       },
-  //     }
-  //     // запис у стан
-  //     )
-  // componentDidMount() {
-  //   fetchIMG(inputValue).then( findImage => this.setState({findImage}))
-  // }
-
-  
+export default Searchbar;

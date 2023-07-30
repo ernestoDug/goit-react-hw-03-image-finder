@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import css from './Modal.module.css';
 
 const Modal = ({ largeImageURL, tag, modalCloser }) => {
@@ -15,6 +17,12 @@ const Modal = ({ largeImageURL, tag, modalCloser }) => {
       </div>
     </>
   );
+};
+
+Modal.propTypes = {
+  largeImageURL: PropTypes.string.isRequired,
+  tag: PropTypes.string.isRequired,
+  modalCloser: PropTypes.func.isRequired,
 };
 
 export default Modal;

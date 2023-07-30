@@ -1,11 +1,11 @@
-// import { render } from '@testing-library/react';
-import css from './Button.module.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';
 
 import { fetchIMG } from 'components/helpers/fetchIMG';
 import { Component } from 'react';
 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import css from './Button.module.css';
 
 class Button extends Component {
   state = {
@@ -14,18 +14,19 @@ class Button extends Component {
 
   // метод для наступного запиту
   paginer = () => {
+    const { curPg } = this.state;
+
     try {
       // перезапит
-      fetchIMG(this.props.inputSearchPr, this.state.curPg).then(respImg => {
+      fetchIMG(this.props.inputSearchPr, curPg).then(respImg => {
         // якщо прийшло без помилки
         if (respImg.request.status === 200) {
           // метод проп від ап
-
           this.props.imageFromGaleryPag(respImg.data.hits);
 
-          console.log(this.props.inputSearchPr, 'inp');
+          // console.log(this.props.inputSearchPr, 'inp');
           // console.log(this.state.pagImages, "st")
-          console.log(this.state.curPg, 'curPg');
+          // console.log(this.state.curPg, 'curPg');
 
           // зміна сторінки
 
@@ -44,6 +45,7 @@ class Button extends Component {
       toast.warn(`🐒Отакої! ${error} 🐒`);
     }
   };
+
   render() {
     return (
       <button className={css.button} onClick={() => this.paginer()}>
@@ -53,5 +55,11 @@ class Button extends Component {
     );
   }
 }
+
+// проптапи
+Button.propTypes = {
+  inputSearchPr: PropTypes.string.isRequired,
+  imageFromGaleryPag: PropTypes.func.isRequired,
+};
 
 export default Button;

@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // npm i react-toastify
-
+import PropTypes from 'prop-types';
 import { Component } from 'react';
 
 import { fetchIMG } from '../helpers/fetchIMG';
@@ -118,5 +118,10 @@ class ImageGalleryItem extends Component {
     );
   }
 }
+
+// протайпи
+ImageGalleryItem.propTypes = {
+  searchWord: PropTypes.string.isRequired,
+};
 
 export default ImageGalleryItem;
