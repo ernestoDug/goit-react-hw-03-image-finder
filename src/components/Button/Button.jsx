@@ -45,7 +45,12 @@ class Button extends Component {
       toast.warn(`🐒Отакої! ${error} 🐒`);
     }
   };
-
+  // поверення на початок при новомму слові
+  componentDidUpdate(prevprops) {
+    if (prevprops.inputSearchPr !== this.props.inputSearchPr) {
+      this.setState({ curPg: 2 });
+    }
+  }
   render() {
     return (
       <button className={css.button} onClick={() => this.paginer()}>
