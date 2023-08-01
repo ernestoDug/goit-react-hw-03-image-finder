@@ -6,9 +6,7 @@ import { toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-// import Loader from 'components/Loader/Loader';
-
-
+import Loader from 'components/Loader/Loader';
 
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
@@ -20,57 +18,62 @@ class App extends Component {
     inputSearch: '',
     responseIMG: [],
     isLoading: false,
-    curPg: 1,
+    curPg: '',
     loading: false,
-
+    error: null,
   };
 
   // отримувач з форми скидач сторінки та галереї
   submiterFromForm = inputSearch => {
-        this.setState({ inputSearch,  curPg: 1, responseIMG: [] });
-    console.log('введено - ', inputSearch);
+    this.setState({ inputSearch, curPg: 1, responseIMG: [] });
+    console.log('введено - ', inputSearch, 'fdf', "dfdfdfdfdfdf55", this.state.responseIMG);
+     };
+
+  // давай ще
+  givMeMore = () => {
+    this.setState(prevState => {
+          return {
+        curPg: prevState.curPg + 1,
+        responseIMG: [ ...this.state.responseIMG, ...prevState.responseIMG ],
+      };
+    });
   };
 
-  // давай ще 
-  givMeMore = () => { 
-    this.setState(prevState => {
-            console.log( this.state.curPg); 
-  
-      return { curPg: prevState.curPg + 1, responseIMG: [...prevState.responseIMG, ...this.state.responseIMG]  };
-    });
-
-  }
-
-// запитувач
+  // запитувач
   async componentDidUpdate(_, prevState) {
-    // console.log('prVpr', this.props);
-    if (this.state.inputSearch !== prevState.inputSearch || this.state.curPg !== prevState.curPg ) {
+    // console.log('prVpr', this.state.curPg);
+    if (
+      this.state.inputSearch !== prevState.inputSearch ||
+      this.state.curPg !== prevState.curPg 
+    ) {
       //  вмикання  лодеря...
-      // this.setState({ loading: true });
-
+      this.setState({ loading: true });
       // запит
       try {
-        const respImg = await fetchIMG(this.state.inputSearch, this.state.curPg).then(
-          respImg => {
-            // якщо прийшло без помилки
-            if (respImg.request.status === 200) {
-              // виклик методу пропсу для передачі галерії
-              this.setState({ responseIMG: respImg.data.hits });
-              // що знайшли
-              if (
-                respImg.request.status === 200 &&
-                respImg.data.hits.length !== 0
-              )
-                toast.success(
-                  `🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`
-                );
-            }
-            // нічого не знайшли
-            if (respImg.data.hits.length === 0) {
-              toast.warn(`🐒 Ми нічого не знайшли 🐒`);
-            }
+        const respImg = await fetchIMG(
+          this.state.inputSearch,
+          this.state.curPg
+        ).then(respImg => {
+          // якщо прийшло без помилки
+          if (respImg.request.status === 200 && prevState.responseIMG !== this.state.responseIMG) {
+            this.setState({ responseIMG: respImg.data.hits });
+            console.log(prevState.responseIMG, 999, this.state.responseIMG, 999,  respImg.data.hits)
           }
-        );
+            
+            // що знайшли
+            if (
+              respImg.request.status === 200 &&
+              respImg.data.hits.length !== 0
+            ) {
+              toast.success(
+                `🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`
+              );
+          }
+          // нічого не знайшли
+          if (respImg.data.hits.length === 0) {
+            toast.warn(`🐒 Ми нічого не знайшли 🐒`);
+          }
+        });
         return respImg;
       } catch (error) {
         // console.log(respImg.statusText,"txt")
@@ -83,24 +86,6 @@ class App extends Component {
       // console.log(respImg, 'відповідь');
     }
   }
-
-
-
-
-
-
-
-
-
-
-  // // метод для пропсу завантажити ще
-  // imageFromGaleryPag = pagImages => {
-  //   this.setState(prevState => {
-  //     // console.log(pagImages, 'pagBum');
-  //     // console.log(this.state.inputSearch, 'inp');
-  //     return { responseIMG: [...prevState.responseIMG, ...pagImages] };
-  //   });
-  // };
 
   render() {
     const { responseIMG, inputSearch } = this.state;
@@ -120,15 +105,21 @@ class App extends Component {
           pauseOnHover
           theme="colored"
         />
-        <ImageGallery
-          searchWord={inputSearch}
-          // метод пропс для галерії
-          imageForGalery={this.state.responseIMG}
-        />
+        {/* лоадер чи галерея?  */}
+        {this.state.loading === true ? (
+          <Loader />
+        ) : (
+          <ImageGallery
+            searchWord={inputSearch}
+            // метод пропс для галерії
+            imageForGalery={this.state.responseIMG}
+          />
+        )}
+
         {/* кнопка */}
         {responseIMG.length !== 0 && (
           <Button
-                   // // метод пропс попвнення галереї
+            // // метод пропс попвнення галереї
             givMeMore={this.givMeMore}
           />
         )}

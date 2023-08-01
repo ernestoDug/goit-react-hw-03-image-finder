@@ -9,8 +9,8 @@ const ImageGallery = ({ imageForGalery }) => {
     <>
       <ul className={css.gallery}>
         <ImageGalleryItem
-                    // переидаю
-                    imageForGalery={imageForGalery}
+          // перекидаю
+          imageForGalery={imageForGalery}
         />
       </ul>
     </>
