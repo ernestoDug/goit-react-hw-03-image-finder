@@ -1,19 +1,16 @@
 import ImageGalleryItem from '../ImageGalleryItem';
 
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import css from './ImageGallery.module.css';
 
-const ImageGallery = ({ searchWord, imageFromGalery, responseIMG }) => {
+const ImageGallery = ({ imageForGalery }) => {
   return (
     <>
       <ul className={css.gallery}>
         <ImageGalleryItem
-          // перекидаю
-          searchWord={searchWord}
-          // переидаю
-          imageFromGalery={imageFromGalery}
-          responseIMG={responseIMG}
+                    // переидаю
+                    imageForGalery={imageForGalery}
         />
       </ul>
     </>
@@ -21,10 +18,10 @@ const ImageGallery = ({ searchWord, imageFromGalery, responseIMG }) => {
 };
 
 // проптайпи
-ImageGallery.propTypes = {
-  searchWord: PropTypes.string.isRequired,
-  imageFromGalery: PropTypes.func.isRequired,
-  responseIMG: PropTypes.array.isRequired,
-};
+// ImageGallery.propTypes = {
+//   searchWord: PropTypes.string.isRequired,
+//   imageFromGalery: PropTypes.array.isRequired,
+//   responseIMG: PropTypes.array,
+// };
 
 export default ImageGallery;
