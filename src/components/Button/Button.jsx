@@ -1,5 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import css from './Button.module.css';
 
@@ -11,10 +11,9 @@ const Button = ({ givMeMore }) => {
   );
 };
 
-// проптапи
-// Button.propTypes = {
-//   inputSearchPr: PropTypes.string.isRequired,
-//   imageFromGaleryPag: PropTypes.func.isRequired,
-// };
+// проптайпи
+Button.propTypes = {
+  givMeMore: PropTypes.func.isRequired,
+};
 
 export default Button;

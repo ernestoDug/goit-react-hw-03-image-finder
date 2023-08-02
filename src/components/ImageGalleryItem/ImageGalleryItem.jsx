@@ -1,7 +1,8 @@
 import 'react-toastify/dist/ReactToastify.css';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Component } from 'react';
 
+import { nanoid } from 'nanoid';
 import Modal from 'components/Modal/Modal';
 import css from './ImageGalleryItem.module.css';
 
@@ -16,9 +17,9 @@ class ImageGalleryItem extends Component {
     this.setState({ showMod: true, modalURL: largeImageURL });
   };
   // закривач модалу
-  modalClos = () => {
+  modalClos = (event) => {
+    if(event.target === event.currentTarget || event.key === 'Escape')
     this.setState({ showMod: false });
-    // console.log('cls');
   };
 
   render() {
@@ -27,11 +28,11 @@ class ImageGalleryItem extends Component {
         {/* галерея умова */}
         {this.props.imageForGalery &&
           this.props.imageForGalery.map(
-            ({ id, webformatURL, largeImageURL, tags }) => {
+            ({ webformatURL, largeImageURL, tags }) => {
               return (
-                <li key={id} className={css.galleryItem}>
+                <li key={nanoid()} className={css.galleryItem}>
                   <img
-                    // адреса великого з
+                    // адреса великого urla
                     onClick={() => {
                       this.modalOpen(largeImageURL);
                     }}
@@ -56,9 +57,9 @@ class ImageGalleryItem extends Component {
   }
 }
 
-// // протайпи
-// ImageGalleryItem.propTypes = {
-//   searchWord: PropTypes.string.isRequired,
-// };
+// протайпи
+ImageGalleryItem.propTypes = {
+  imageForGalery: PropTypes.array.isRequired,
+};
 
 export default ImageGalleryItem;

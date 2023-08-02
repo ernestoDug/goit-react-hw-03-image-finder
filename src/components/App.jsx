@@ -1,11 +1,8 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 // npm i react-toastify
-
 import { toast } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
-
 import Loader from 'components/Loader/Loader';
 
 import Searchbar from './Searchbar';
@@ -21,30 +18,25 @@ class App extends Component {
     curPg: '',
     loading: false,
     error: null,
+    ttt: '',
   };
 
   // отримувач з форми скидач сторінки та галереї
   submiterFromForm = inputSearch => {
     this.setState({ inputSearch, curPg: 1, responseIMG: [] });
-    console.log('введено - ', inputSearch, 'fdf', "dfdfdfdfdfdf55", this.state.responseIMG);
-     };
-
+  };
   // давай ще
   givMeMore = () => {
     this.setState(prevState => {
-          return {
-        curPg: prevState.curPg + 1,
-        responseIMG: [ ...this.state.responseIMG, ...prevState.responseIMG ],
-      };
+      return { curPg: prevState.curPg + 1 };
     });
   };
-
   // запитувач
   async componentDidUpdate(_, prevState) {
     // console.log('prVpr', this.state.curPg);
     if (
       this.state.inputSearch !== prevState.inputSearch ||
-      this.state.curPg !== prevState.curPg 
+      this.state.curPg !== prevState.curPg
     ) {
       //  вмикання  лодеря...
       this.setState({ loading: true });
@@ -54,20 +46,22 @@ class App extends Component {
           this.state.inputSearch,
           this.state.curPg
         ).then(respImg => {
-          // якщо прийшло без помилки
-          if (respImg.request.status === 200 && prevState.responseIMG !== this.state.responseIMG) {
-            this.setState({ responseIMG: respImg.data.hits });
-            console.log(prevState.responseIMG, 999, this.state.responseIMG, 999,  respImg.data.hits)
-          }
-            
-            // що знайшли
-            if (
-              respImg.request.status === 200 &&
-              respImg.data.hits.length !== 0
-            ) {
-              toast.success(
-                `🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`
-              );
+          // якщо пагінація
+          this.state.curPg > 1
+            ? this.setState({
+                responseIMG: [...this.state.responseIMG, ...respImg.data.hits],
+              })
+            : // якщо вперше
+              this.setState({ responseIMG: respImg.data.hits });
+          // що знайшли
+          if (
+            respImg.request.status === 200 &&
+            respImg.data.hits.length !== 0 &&
+            this.state.curPg === 1
+          ) {
+            toast.success(
+              `🐒Ми знайшли ${respImg.data.totalHits} 🍌..., світлин 🐒`
+            );
           }
           // нічого не знайшли
           if (respImg.data.hits.length === 0) {
@@ -76,20 +70,16 @@ class App extends Component {
         });
         return respImg;
       } catch (error) {
-        // console.log(respImg.statusText,"txt")
         this.setState({ error });
         toast.warn(`🐒Отакої! ${error} 🐒`);
       } finally {
         // вимикання лодеря
         this.setState({ loading: false });
       }
-      // console.log(respImg, 'відповідь');
     }
   }
-
   render() {
-    const { responseIMG, inputSearch } = this.state;
-
+    const { responseIMG } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.submiterFromForm} />
@@ -110,12 +100,10 @@ class App extends Component {
           <Loader />
         ) : (
           <ImageGallery
-            searchWord={inputSearch}
             // метод пропс для галерії
             imageForGalery={this.state.responseIMG}
           />
         )}
-
         {/* кнопка */}
         {responseIMG.length !== 0 && (
           <Button
