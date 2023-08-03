@@ -16,13 +16,14 @@ class App extends Component {
     responseIMG: [],
     isLoading: false,
     curPg: '',
-    loading: false, 
+    loading: false,
     error: null,
   };
 
   // отримувач з форми скидач сторінки та галереї
   submiterFromForm = inputSearch => {
     this.setState({ inputSearch, curPg: 1, responseIMG: [] });
+    // console.log(this.state.responseIMG, "Є");
   };
   // давай ще
   givMeMore = () => {
@@ -30,26 +31,23 @@ class App extends Component {
       return { curPg: prevState.curPg + 1 };
     });
   };
+
   // запитувач
   async componentDidUpdate(_, prevState) {
     // console.log('prVpr', this.state.curPg);
-    if (
-      this.state.inputSearch !== prevState.inputSearch ||
-      this.state.curPg !== prevState.curPg
-    ) {
+    const { curPg, inputSearch } = this.state;
+    if (inputSearch !== prevState.inputSearch || curPg !== prevState.curPg) {
       //  вмикання  лодеря...
       this.setState({ loading: true });
       // запит
       try {
-        const respImg = await fetchIMG(
-          this.state.inputSearch,
-          this.state.curPg
-        ).then(respImg => {
+        const respImg = await fetchIMG(inputSearch, curPg).then(respImg => {
           // якщо пагінація
-          this.state.curPg > 1
-            ? this.setState({
-                responseIMG: [...this.state.responseIMG, ...respImg.data.hits],
-              })
+          curPg > 1 && respImg.request.status === 200
+            ? // this.setState({responseIMG: [...this.state.responseIMG, ...respImg.data.hits]})
+              this.setState(prevState => ({
+                responseIMG: [...prevState.responseIMG, ...respImg.data.hits],
+              }))
             : // якщо вперше
               this.setState({ responseIMG: respImg.data.hits });
           // що знайшли
@@ -76,13 +74,15 @@ class App extends Component {
         this.setState({ loading: false });
       }
     }
+    // console.log(responseIMG, "'є'");
+    // console.log(prevState.responseIMG, "було");
   }
   render() {
-    const { responseIMG } = this.state;
+    const { responseIMG, loading } = this.state;
     return (
       <div>
-
-           <ToastContainer
+        <Searchbar onSubmit={this.submiterFromForm} />
+        <ToastContainer
           position="top-center"
           autoClose={2000}
           hideProgressBar={false}
@@ -94,34 +94,26 @@ class App extends Component {
           pauseOnHover
           theme="colored"
         />
-        
-        <Searchbar onSubmit={this.submiterFromForm} />
-       
-        {/* лоадер чи галерея?  */}
-        {this.state.loading === true && (
-          <Loader />
-        ) }
-        
-        {responseIMG.length !== 0 && (
-          <>     
-          <ImageGallery
-            // метод пропс для галерії
-            imageForGalery={this.state.responseIMG}
-            />
-          
-            </>
-              )}
-              
-              
-        {/* кнопка */}
-        {(responseIMG.length !== 0 ) && (
-          <Button
 
-     
+        {/* лоадер чи галерея?  */}
+        {loading === true && <Loader />}
+
+        {responseIMG.length !== 0 && (
+          <>
+            <ImageGallery
+              // метод пропс для галерії
+              imageForGalery={responseIMG}
+            />
+          </>
+        )}
+
+        {/* кнопка */}
+        {responseIMG.length !== 0 && loading === false && (
+          <Button
             // // метод пропс попвнення галереї
             givMeMore={this.givMeMore}
           />
-          )}
+        )}
       </div>
     );
   }
