@@ -5,7 +5,12 @@ import css from './Button.module.css';
 
 const Button = ({ givMeMore }) => {
   return (
-    <button className={css.button} onClick={() => givMeMore()}>
+    <button 
+    hidden = {givMeMore  !== undefined ? true : false }
+    
+    className={css.button} 
+    
+    onClick={() => givMeMore()}>
       Завантажити ще 🐵
     </button>
   );

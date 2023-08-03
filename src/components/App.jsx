@@ -8,7 +8,7 @@ import Loader from 'components/Loader/Loader';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
-import { fetchIMG } from './helpers/fetchIMG';
+import { fetchIMG } from '../helpers/fetchIMG';
 
 class App extends Component {
   state = {
@@ -16,9 +16,8 @@ class App extends Component {
     responseIMG: [],
     isLoading: false,
     curPg: '',
-    loading: false,
+    loading: false, 
     error: null,
-    ttt: '',
   };
 
   // отримувач з форми скидач сторінки та галереї
@@ -82,8 +81,8 @@ class App extends Component {
     const { responseIMG } = this.state;
     return (
       <div>
-        <Searchbar onSubmit={this.submiterFromForm} />
-        <ToastContainer
+
+           <ToastContainer
           position="top-center"
           autoClose={2000}
           hideProgressBar={false}
@@ -95,22 +94,34 @@ class App extends Component {
           pauseOnHover
           theme="colored"
         />
+        
+        <Searchbar onSubmit={this.submiterFromForm} />
+       
         {/* лоадер чи галерея?  */}
-        {this.state.loading === true ? (
+        {this.state.loading === true && (
           <Loader />
-        ) : (
+        ) }
+        
+        {responseIMG.length !== 0 && (
+          <>     
           <ImageGallery
             // метод пропс для галерії
             imageForGalery={this.state.responseIMG}
-          />
-        )}
+            />
+          
+            </>
+              )}
+              
+              
         {/* кнопка */}
-        {responseIMG.length !== 0 && (
+        {(responseIMG.length !== 0 ) && (
           <Button
+
+     
             // // метод пропс попвнення галереї
             givMeMore={this.givMeMore}
           />
-        )}
+          )}
       </div>
     );
   }

@@ -2,7 +2,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 
-import { nanoid } from 'nanoid';
+
 import Modal from 'components/Modal/Modal';
 import css from './ImageGalleryItem.module.css';
 
@@ -18,7 +18,7 @@ class ImageGalleryItem extends Component {
   };
   // закривач модалу
   modalClos = (event) => {
-    if(event.target === event.currentTarget || event.key === 'Escape')
+    if(event.target === event.currentTarget )
     this.setState({ showMod: false });
   };
 
@@ -26,40 +26,37 @@ class ImageGalleryItem extends Component {
     return (
       <>
         {/* галерея умова */}
-        {this.props.imageForGalery &&
-          this.props.imageForGalery.map(
-            ({ webformatURL, largeImageURL, tags }) => {
-              return (
-                <li key={nanoid()} className={css.galleryItem}>
+       
+            
+                <li  className={css.galleryItem}>
                   <img
                     // адреса великого urla
                     onClick={() => {
-                      this.modalOpen(largeImageURL);
+                      this.modalOpen(this.props.largeImageURL);
                     }}
                     className={css.imageGalleryItemImage}
-                    src={webformatURL}
-                    alt={tags}
+                    src={this.props.webformatURL}
+                    alt={this.props.tags}
                   />
                   {/* поява модалки */}
                   {this.state.showMod && (
                     <Modal
                       largeImageURL={this.state.modalURL}
-                      tag={tags}
+                      tag={this.props.tags}
                       modalCloser={this.modalClos}
                     />
                   )}
                 </li>
-              );
-            }
-          )}
-      </>
+                      </>
     );
   }
 }
 
 // протайпи
 ImageGalleryItem.propTypes = {
-  imageForGalery: PropTypes.array.isRequired,
+  webformatURL: PropTypes.string.isRequired,
+largeImageURL: PropTypes.string.isRequired,
+tags: PropTypes.string.isRequired
 };
 
 export default ImageGalleryItem;
